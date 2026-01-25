@@ -1,12 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { TableSchema, SchemaAttribute, DynamoDBType, KeyType } from '@/lib/types';
-import { dynamoDBTypeLabels } from '@/lib/mock-data';
-import { Card } from '@/components/ui/Card';
-import { Input } from '@/components/ui/Input';
-import { Select } from '@/components/ui/Select';
-import { Button } from '@/components/ui/Button';
+import { useState, useEffect } from "react";
+import {
+  TableSchema,
+  SchemaAttribute,
+  DynamoDBType,
+  KeyType,
+} from "@/lib/types";
+import { dynamoDBTypeLabels } from "@/lib/mock-data";
+import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { Button } from "@/components/ui/Button";
 
 interface SchemaEditorProps {
   schema: TableSchema | null;
@@ -16,59 +21,56 @@ interface SchemaEditorProps {
 }
 
 const keyTypeOptions = [
-  { value: 'S', label: 'String (S)' },
-  { value: 'N', label: 'Number (N)' },
-  { value: 'B', label: 'Binary (B)' },
+  { value: "S", label: "String (S)" },
+  { value: "N", label: "Number (N)" },
+  { value: "B", label: "Binary (B)" },
 ];
 
-const attributeTypeOptions = Object.entries(dynamoDBTypeLabels).map(([value, label]) => ({
-  value,
-  label: `${label} (${value})`,
-}));
+const attributeTypeOptions = Object.entries(dynamoDBTypeLabels).map(
+  ([value, label]) => ({
+    value,
+    label: `${label} (${value})`,
+  })
+);
 
 function generateId(): string {
   return Math.random().toString(36).substring(2, 11);
 }
 
-export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEditorProps) {
+export function SchemaEditor({
+  schema,
+  onSave,
+  onDelete,
+  onCancel,
+}: SchemaEditorProps) {
   const isNew = !schema;
 
-  const [tableName, setTableName] = useState('');
-  const [partitionKeyName, setPartitionKeyName] = useState('');
-  const [partitionKeyType, setPartitionKeyType] = useState<KeyType>('S');
-  const [hasSortKey, setHasSortKey] = useState(false);
-  const [sortKeyName, setSortKeyName] = useState('');
-  const [sortKeyType, setSortKeyType] = useState<KeyType>('S');
-  const [attributes, setAttributes] = useState<SchemaAttribute[]>([]);
-
-  useEffect(() => {
-    if (schema) {
-      setTableName(schema.tableName);
-      setPartitionKeyName(schema.partitionKey.name);
-      setPartitionKeyType(schema.partitionKey.type);
-      setHasSortKey(!!schema.sortKey);
-      setSortKeyName(schema.sortKey?.name || '');
-      setSortKeyType(schema.sortKey?.type || 'S');
-      setAttributes(schema.attributes);
-    } else {
-      setTableName('');
-      setPartitionKeyName('');
-      setPartitionKeyType('S');
-      setHasSortKey(false);
-      setSortKeyName('');
-      setSortKeyType('S');
-      setAttributes([]);
-    }
-  }, [schema]);
+  const [tableName, setTableName] = useState(() => schema?.tableName || "");
+  const [partitionKeyName, setPartitionKeyName] = useState(
+    () => schema?.partitionKey.name || ""
+  );
+  const [partitionKeyType, setPartitionKeyType] = useState<KeyType>(
+    () => schema?.partitionKey.type || "S"
+  );
+  const [hasSortKey, setHasSortKey] = useState(() => !!schema?.sortKey);
+  const [sortKeyName, setSortKeyName] = useState(
+    () => schema?.sortKey?.name || ""
+  );
+  const [sortKeyType, setSortKeyType] = useState<KeyType>(
+    () => schema?.sortKey?.type || "S"
+  );
+  const [attributes, setAttributes] = useState<SchemaAttribute[]>(
+    () => schema?.attributes || []
+  );
 
   const addAttribute = () => {
-    setAttributes([
-      ...attributes,
-      { name: '', type: 'S', required: false },
-    ]);
+    setAttributes([...attributes, { name: "", type: "S", required: false }]);
   };
 
-  const updateAttribute = (index: number, updates: Partial<SchemaAttribute>) => {
+  const updateAttribute = (
+    index: number,
+    updates: Partial<SchemaAttribute>
+  ) => {
     setAttributes(
       attributes.map((attr, i) =>
         i === index ? { ...attr, ...updates } : attr
@@ -87,8 +89,10 @@ export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEdito
       id: schema?.id || generateId(),
       tableName,
       partitionKey: { name: partitionKeyName, type: partitionKeyType },
-      sortKey: hasSortKey ? { name: sortKeyName, type: sortKeyType } : undefined,
-      attributes: attributes.filter((attr) => attr.name.trim() !== ''),
+      sortKey: hasSortKey
+        ? { name: sortKeyName, type: sortKeyType }
+        : undefined,
+      attributes: attributes.filter((attr) => attr.name.trim() !== ""),
     };
 
     onSave(newSchema);
@@ -99,7 +103,7 @@ export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEdito
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-lg font-semibold text-text-primary">
-            {isNew ? 'Create New Schema' : 'Edit Schema'}
+            {isNew ? "Create New Schema" : "Edit Schema"}
           </h2>
           {!isNew && onDelete && (
             <Button
@@ -179,7 +183,12 @@ export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEdito
             <h3 className="text-sm font-medium text-text-secondary uppercase tracking-wide">
               Attributes
             </h3>
-            <Button type="button" variant="secondary" size="sm" onClick={addAttribute}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={addAttribute}
+            >
               Add Attribute
             </Button>
           </div>
@@ -196,34 +205,44 @@ export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEdito
                   className="grid grid-cols-[1fr_1fr_auto_auto] gap-3 items-end"
                 >
                   <Input
-                    label={index === 0 ? 'Name' : undefined}
+                    label={index === 0 ? "Name" : undefined}
                     value={attr.name}
-                    onChange={(e) => updateAttribute(index, { name: e.target.value })}
+                    onChange={(e) =>
+                      updateAttribute(index, { name: e.target.value })
+                    }
                     placeholder="attributeName"
                   />
                   <Select
-                    label={index === 0 ? 'Type' : undefined}
+                    label={index === 0 ? "Type" : undefined}
                     value={attr.type}
                     onChange={(e) =>
-                      updateAttribute(index, { type: e.target.value as DynamoDBType })
+                      updateAttribute(index, {
+                        type: e.target.value as DynamoDBType,
+                      })
                     }
                     options={attributeTypeOptions}
                   />
-                  <div className={`flex items-center gap-2 ${index === 0 ? 'mt-6' : ''}`}>
+                  <div
+                    className={`flex items-center gap-2 ${index === 0 ? "mt-6" : ""}`}
+                  >
                     <input
                       type="checkbox"
                       checked={attr.required}
-                      onChange={(e) => updateAttribute(index, { required: e.target.checked })}
+                      onChange={(e) =>
+                        updateAttribute(index, { required: e.target.checked })
+                      }
                       className="w-4 h-4 rounded border-border bg-bg-tertiary text-accent focus:ring-accent"
                     />
-                    <span className="text-sm text-text-secondary">Required</span>
+                    <span className="text-sm text-text-secondary">
+                      Required
+                    </span>
                   </div>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={() => removeAttribute(index)}
-                    className={index === 0 ? 'mt-6' : ''}
+                    className={index === 0 ? "mt-6" : ""}
                   >
                     <svg
                       className="w-4 h-4 text-error"
@@ -250,7 +269,7 @@ export function SchemaEditor({ schema, onSave, onDelete, onCancel }: SchemaEdito
             Cancel
           </Button>
           <Button type="submit">
-            {isNew ? 'Create Schema' : 'Save Changes'}
+            {isNew ? "Create Schema" : "Save Changes"}
           </Button>
         </div>
       </form>

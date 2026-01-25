@@ -1,14 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { TableSchema } from '@/lib/types';
-import { mockSchemas } from '@/lib/mock-data';
-import { SchemaList } from '@/components/schemas/SchemaList';
-import { SchemaEditor } from '@/components/schemas/SchemaEditor';
+import { useState } from "react";
+import { TableSchema } from "@/lib/types";
+import { mockSchemas } from "@/lib/mock-data";
+import { SchemaList } from "@/components/schemas/SchemaList";
+import { SchemaEditor } from "@/components/schemas/SchemaEditor";
 
 export default function SchemasPage() {
   const [schemas, setSchemas] = useState<TableSchema[]>(mockSchemas);
-  const [selectedSchema, setSelectedSchema] = useState<TableSchema | null>(null);
+  const [selectedSchema, setSelectedSchema] = useState<TableSchema | null>(
+    null
+  );
   const [isCreating, setIsCreating] = useState(false);
 
   const handleSelect = (schema: TableSchema) => {
@@ -46,7 +48,9 @@ export default function SchemasPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary">Schema Management</h1>
+        <h1 className="text-2xl font-bold text-text-primary">
+          Schema Management
+        </h1>
         <p className="text-text-secondary mt-1">
           Define and manage DynamoDB table schemas for validation
         </p>
@@ -63,8 +67,9 @@ export default function SchemasPage() {
         </div>
 
         <div>
-          {(selectedSchema || isCreating) ? (
+          {selectedSchema || isCreating ? (
             <SchemaEditor
+              key={selectedSchema?.id || "new"}
               schema={isCreating ? null : selectedSchema}
               onSave={handleSave}
               onDelete={handleDelete}
