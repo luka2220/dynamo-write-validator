@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const navLinks = [
   { href: '/', label: 'Logs' },
   { href: '/schemas', label: 'Schemas' },
-];
+]
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-bg-secondary border-b border-border z-50">
@@ -38,7 +38,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-1">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname === link.href
               return (
                 <Link
                   key={link.href}
@@ -54,7 +54,7 @@ export function Navbar() {
                 >
                   {link.label}
                 </Link>
-              );
+              )
             })}
           </div>
         </div>
@@ -67,5 +67,5 @@ export function Navbar() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

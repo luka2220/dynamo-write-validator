@@ -1,72 +1,72 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  /* Dark theme colors */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a24;
-  --text-primary: #f0f0f5;
-  --text-secondary: #9898a8;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --success-bg: rgba(34, 197, 94, 0.1);
-  --error: #ef4444;
-  --error-bg: rgba(239, 68, 68, 0.1);
-  --border: #2a2a3a;
-  --border-hover: #3a3a4a;
+    /* Dark theme colors */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a24;
+    --text-primary: #f0f0f5;
+    --text-secondary: #9898a8;
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --border: #2a2a3a;
+    --border-hover: #3a3a4a;
 }
 
 @theme inline {
-  --color-bg-primary: var(--bg-primary);
-  --color-bg-secondary: var(--bg-secondary);
-  --color-bg-tertiary: var(--bg-tertiary);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-success-bg: var(--success-bg);
-  --color-error: var(--error);
-  --color-error-bg: var(--error-bg);
-  --color-border: var(--border);
-  --color-border-hover: var(--border-hover);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-bg-primary: var(--bg-primary);
+    --color-bg-secondary: var(--bg-secondary);
+    --color-bg-tertiary: var(--bg-tertiary);
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-accent: var(--accent);
+    --color-accent-hover: var(--accent-hover);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-success-bg: var(--success-bg);
+    --color-error: var(--error);
+    --color-error-bg: var(--error-bg);
+    --color-border: var(--border);
+    --color-border-hover: var(--border-hover);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-sans), system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+    background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+    background: var(--border);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+    background: var(--border-hover);
 }
 
 /* Code block styling */
 pre {
-  font-family: var(--font-mono), monospace;
+    font-family: var(--font-mono), monospace;
 }
 
 code {
-  font-family: var(--font-mono), monospace;
+    font-family: var(--font-mono), monospace;
 }
