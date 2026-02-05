@@ -1,4 +1,10 @@
 import * as z from 'zod'
+import type {
+  GetItemCommandInput,
+  PutItemCommandInput,
+  QueryCommandInput,
+  DeleteItemCommandInput,
+} from '@aws-sdk/client-dynamodb'
 
 // DynamoDB attribute types
 export type DynamoDBType =
@@ -89,7 +95,7 @@ export function isErrorLogEntry(entry: LogEntry): entry is ErrorLogEntry {
 export const DynamoOperationEnum = z.enum([
   'PutItem',
   'GetItem',
-  'QueryItem',
+  'Query',
   'UpdateItem',
   'DeleteItem',
 ])
@@ -111,11 +117,12 @@ export type DynamoAttributeValue =
   | DynamoAttributeValue[]
   | { [key: string]: DynamoAttributeValue }
 
-/** Request format of a dynamodb operation */
-export interface DynamoRequestBody {
-  TableName: string
-  Item: Record<string, Record<DynamoDBType, DynamoAttributeValue>>
-}
+/** Union of all dynamo request body types */
+export type DynamoRequestBody =
+  | PutItemCommandInput
+  | GetItemCommandInput
+  | QueryCommandInput
+  | DeleteItemCommandInput
 
 /** Header data dynamo sends along with the db request */
 export interface DynamoHeaderData {
@@ -124,8 +131,32 @@ export interface DynamoHeaderData {
   'x-amz-date': string
 }
 
-export interface DynamoRequestData {
-  operation: ValidDynamoOperation
-  body: DynamoRequestBody
+interface DynamoRequestDataBase {
   headers: DynamoHeaderData
 }
+
+export interface DynamoPutItemRequest extends DynamoRequestDataBase {
+  operation: 'PutItem' | 'UpdateItem'
+  body: PutItemCommandInput
+}
+
+export interface DynamoGetItemRequest extends DynamoRequestDataBase {
+  operation: 'GetItem'
+  body: GetItemCommandInput
+}
+
+export interface DynamoQueryRequest extends DynamoRequestDataBase {
+  operation: 'Query'
+  body: QueryCommandInput
+}
+
+export interface DynamoDeleteItemRequest extends DynamoRequestDataBase {
+  operation: 'DeleteItem'
+  body: DeleteItemCommandInput
+}
+
+export type DynamoRequestData =
+  | DynamoPutItemRequest
+  | DynamoGetItemRequest
+  | DynamoQueryRequest
+  | DynamoDeleteItemRequest
