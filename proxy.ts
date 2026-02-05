@@ -24,6 +24,7 @@ export async function proxy(request: NextRequest) {
   ) {
     if (parsedOperation.error) {
       // Invalid dynamo operation
+      console.log(`Invalid dynamo operation: ${parsedOperation.error}`)
       return new Response(`Invalid dynamo operation: ${parsedOperation.error}`)
     }
 
@@ -38,7 +39,9 @@ export async function proxy(request: NextRequest) {
         'x-amz-date': request.headers.get('x-amz-date') || '',
       },
     } as DynamoRequestData
-    await ValidateDynamoRequest(dynamoData)
+
+    const dynamoResponse = await ValidateDynamoRequest(dynamoData)
+    return new Response(JSON.stringify(dynamoResponse))
   }
 
   return NextResponse.next()

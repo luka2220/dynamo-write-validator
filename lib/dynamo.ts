@@ -15,17 +15,12 @@ const dynamoClient = new DynamoDBClient({
 
 export async function ValidateDynamoRequest(request: DynamoRequestData) {
   try {
-    console.info('Request -> ', request)
-    console.info('Request Body -> ', request.body)
-
     switch (request.operation) {
       case 'GetItem': {
-        const getResponse = await GetItem(request.body)
-        return new Response(JSON.stringify(getResponse))
+        return await GetItem(request.body)
       }
-      case 'QueryItem': {
-        const response = await Query(request.body)
-        return new Response(JSON.stringify(response))
+      case 'Query': {
+        return await Query(request.body)
       }
       case 'PutItem':
       case 'UpdateItem':
@@ -40,20 +35,16 @@ export async function ValidateDynamoRequest(request: DynamoRequestData) {
       stack: isError && error.stack,
     })
 
-    return new Response('Something went wrong', {
-      status: 500,
-    })
+    throw error
   }
 }
 
 async function GetItem(body: GetItemCommandInput) {
   const command = new GetItemCommand(body)
-  const response = await dynamoClient.send(command)
-  return response
+  return await dynamoClient.send(command)
 }
 
 async function Query(body: QueryCommandInput) {
   const command = new QueryCommand(body)
-  const response = await dynamoClient.send(command)
-  return response
+  return await dynamoClient.send(command)
 }

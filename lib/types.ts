@@ -95,7 +95,7 @@ export function isErrorLogEntry(entry: LogEntry): entry is ErrorLogEntry {
 export const DynamoOperationEnum = z.enum([
   'PutItem',
   'GetItem',
-  'QueryItem',
+  'Query',
   'UpdateItem',
   'DeleteItem',
 ])
@@ -146,7 +146,7 @@ export interface DynamoGetItemRequest extends DynamoRequestDataBase {
 }
 
 export interface DynamoQueryRequest extends DynamoRequestDataBase {
-  operation: 'QueryItem'
+  operation: 'Query'
   body: QueryCommandInput
 }
 
