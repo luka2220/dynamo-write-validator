@@ -14,6 +14,8 @@ const dynamoClient = new DynamoDBClient({
 })
 
 export async function ValidateDynamoRequest(request: DynamoRequestData) {
+  console.log('Dynamo Request -> ', request)
+
   try {
     switch (request.operation) {
       case 'GetItem': {
