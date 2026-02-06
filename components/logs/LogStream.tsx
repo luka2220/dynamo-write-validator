@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { LogEntry as LogEntryType } from '@/lib/types'
 import { LogEntry } from './LogEntry'
 import { Button } from '@/components/ui/Button'
+import { clearLogs } from '@/lib/log-actions'
+import { useRouter } from 'next/navigation'
 
 interface LogStreamProps {
   logs: LogEntryType[]
@@ -13,6 +15,8 @@ type FilterType = 'all' | 'success' | 'error'
 
 export function LogStream({ logs }: LogStreamProps) {
   const [filter, setFilter] = useState<FilterType>('all')
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const filteredLogs = logs.filter((log) => {
     if (filter === 'all') return true
@@ -22,9 +26,29 @@ export function LogStream({ logs }: LogStreamProps) {
   const successCount = logs.filter((l) => l.status === 'success').length
   const errorCount = logs.filter((l) => l.status === 'error').length
 
+  const handleClearLogs = () => {
+    startTransition(async () => {
+      const result = await clearLogs()
+
+      if (!result.success) {
+        console.error('An error occurred clearing the logs: ')
+      }
+
+      router.refresh()
+    })
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
+        <Button
+          variant="secondary"
+          onClick={handleClearLogs}
+          isLoading={isPending}
+        >
+          {isPending ? 'Processing' : 'Clear Logs'}
+        </Button>
+
         <div className="flex items-center gap-2">
           <Button
             variant={filter === 'all' ? 'primary' : 'ghost'}

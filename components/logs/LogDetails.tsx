@@ -15,6 +15,7 @@ function ValidationErrorItem({ error }: { error: ValidationError }) {
               {error.attributeName}
             </span>
           </div>
+
           <p className="text-sm text-text-secondary mb-2">{error.message}</p>
           <div className="flex gap-4 text-xs">
             <div>
@@ -23,12 +24,14 @@ function ValidationErrorItem({ error }: { error: ValidationError }) {
                 {error.expectedType}
               </span>
             </div>
+
             <div>
               <span className="text-text-secondary">Received: </span>
               <span className="font-mono text-error">{error.receivedType}</span>
             </div>
           </div>
         </div>
+
         <div className="text-right">
           <span className="text-xs text-text-secondary">Value:</span>
           <div className="font-mono text-xs text-text-primary mt-0.5">
@@ -61,16 +64,19 @@ export function LogDetails({ entry }: LogDetailsProps) {
           Validation Errors ({entry.errors.length})
         </span>
       </div>
+
       <div className="space-y-2 mb-4">
         {entry.errors.map((error, index) => (
           <ValidationErrorItem key={index} error={error} />
         ))}
       </div>
+
       <div className="mb-2">
         <span className="text-xs font-medium text-text-secondary uppercase tracking-wide">
           Attempted Data
         </span>
       </div>
+
       <CodeBlock code={JSON.stringify(entry.attemptedData, null, 2)} />
     </div>
   )
